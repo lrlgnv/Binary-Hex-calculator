@@ -49,11 +49,22 @@ def add_in_binary(binary_num1, binary_num2):
     return ans
  
 def subtract_in_binary(binary_num1, binary_num2):
-    length = len(binary_num1)
+    length = max(len(binary_num1), len(binary_num2))
+    binary_num1 = binary_num1.zfill(length)
     binary_num2 = binary_num2.zfill(length)
+    print(f'{binary_num1} - {binary_num2}')
     ans = int(binary_num1) + int(binary_twos_complement(binary_num2))
     ans = carry(str(ans), '-')
     return ans
+
+def twos_complement_to_binary(binary_num):
+    if binary_num[0] == '1':
+        sign = '-'
+        binary_num = binary_twos_complement(binary_num)
+    else:
+        sign = ''
+        binary_num = binary_num
+    print(f'{sign}{binary_num}')
 
 def carry(binary_num1, operation):
     carry = False
@@ -83,6 +94,8 @@ def carry(binary_num1, operation):
        new_binary_num1 = new_binary_num1[:-1]
     return new_binary_num1[::-1]
 
+def binary_to_decimal(binary_num):
+    return int(binary_num, 2)
 
 if __name__ == '__main__':
     base = '2'
@@ -110,10 +123,14 @@ if __name__ == '__main__':
                 UserIn2 = input('Enter another hex number: ')
                 UserIn1 = convert_hex_to_binary(UserIn1)
                 UserIn2 = convert_hex_to_binary(UserIn2)
-            print(add_in_binary(UserIn1, UserIn2))
-            print(add(UserIn1, UserIn2))
-            #check if the add function works
-            assert add_in_binary(UserIn1, UserIn2) == add(UserIn1, UserIn2)
+                print(f"Convert to binary: Input1 = {UserIn1}, Input2 = {UserIn2}")
+            ans = add_in_binary(UserIn1, UserIn2)
+            decimal = binary_to_decimal(ans)
+            print("Binary form:", ans)
+            if base == '16':
+                ans = convert_binary_to_hex(ans)
+                print("Hex form:", ans)
+            print("Decimal form:", decimal)
         elif mode == '2':
             if base == '2':
                 UserIn1 = input('Enter a binary number: ')
@@ -123,10 +140,16 @@ if __name__ == '__main__':
                 UserIn2 = input('Enter another hex number: ')
                 UserIn1 = convert_hex_to_binary(UserIn1)
                 UserIn2 = convert_hex_to_binary(UserIn2)
-            print(subtract_in_binary(UserIn1, UserIn2))
-            print(subtract(UserIn1, UserIn2))
-            #check if the add function works
-            #assert subtract_in_binary(UserIn1, UserIn2) == subtract(UserIn1, UserIn2)
+                print(f"Convert to binary: Input1 = {UserIn1}, Input2 = {UserIn2}")
+            ans = subtract_in_binary(UserIn1, UserIn2)
+            print("2s complement form:", ans)
+            if base == '16':
+                hex = convert_binary_to_hex(ans)
+                print("Hex 2s complement form:", hex)
+            print("Convert to normal form:")
+            (twos_complement_to_binary(ans))
+            
+
         elif mode == '3':
             base = input('Enter a base: ')
             base = str(base)
